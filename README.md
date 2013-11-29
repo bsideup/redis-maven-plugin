@@ -25,6 +25,7 @@ Integration tests example
 -----------------
 
 (This example also available here: https://github.com/bsideup/redis-maven-plugin/tree/master/example )
+
 Configure plugin as follow:
 ```xml
 <plugin>
