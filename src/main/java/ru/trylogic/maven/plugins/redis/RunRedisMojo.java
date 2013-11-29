@@ -1,0 +1,70 @@
+package ru.trylogic.maven.plugins.redis;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import redis.server.netty.RedisCommandDecoder;
+import redis.server.netty.RedisCommandHandler;
+import redis.server.netty.RedisReplyEncoder;
+import redis.server.netty.SimpleRedisServer;
+
+@Mojo(name = "run", defaultPhase = LifecyclePhase.NONE)
+public class RunRedisMojo extends AbstractMojo {
+    @Parameter(property = "redis.server.port", defaultValue = "6379")
+    public Integer port;
+
+    @Parameter(property = "redis.server.forked", defaultValue = "false")
+    public boolean forked;
+
+    public void execute() throws MojoExecutionException {
+        final RedisCommandHandler commandHandler = new RedisCommandHandler(new SimpleRedisServer());
+
+        RedisServerRegistry.redisGroup = new DefaultEventExecutorGroup(1);
+        ServerBootstrap redisServerBootstrap = new ServerBootstrap();
+
+        try {
+            redisServerBootstrap.group(new NioEventLoopGroup(), new NioEventLoopGroup())
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 100)
+                    .localAddress(port)
+                    .childOption(ChannelOption.TCP_NODELAY, true)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline p = ch.pipeline();
+                            p.addLast(new RedisCommandDecoder());
+                            p.addLast(new RedisReplyEncoder());
+                            p.addLast(RedisServerRegistry.redisGroup, commandHandler);
+                        }
+                    });
+
+            getLog().info("Starting Redis server...");
+            ChannelFuture future = redisServerBootstrap.bind();
+
+            try {
+                if (!forked) {
+                    ChannelFuture syncFuture = future.sync();
+                    syncFuture.channel().closeFuture().sync();
+                }
+            } catch (InterruptedException e) {
+                getLog().info(e);
+                RedisServerRegistry.redisGroup.shutdownGracefully();
+            }
+        } finally {
+            if (!forked) {
+                RedisServerRegistry.redisGroup.shutdownGracefully();
+            }
+        }
+    }
+}
