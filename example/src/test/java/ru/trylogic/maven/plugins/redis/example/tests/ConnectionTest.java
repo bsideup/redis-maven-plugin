@@ -15,6 +15,11 @@ public class ConnectionTest {
         jedis.set("test", "123");
         
         Assert.assertEquals("123", jedis.get("test"));
+        
+        try {
+            jedis.quit();
+        } catch (Exception e) {
+        }
     }
     
 }

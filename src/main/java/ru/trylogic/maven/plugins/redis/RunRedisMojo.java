@@ -49,7 +49,7 @@ public class RunRedisMojo extends AbstractMojo {
                         }
                     });
 
-            getLog().info("Starting Redis server...");
+            getLog().info("Starting Redis(forked=" + forked + ") server...");
             ChannelFuture future = redisServerBootstrap.bind();
 
             try {

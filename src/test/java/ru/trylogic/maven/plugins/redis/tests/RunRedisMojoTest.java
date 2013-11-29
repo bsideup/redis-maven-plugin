@@ -44,7 +44,7 @@ public class RunRedisMojoTest extends AbstractRedisMojoTest {
         assertEquals(TEST_VALUE, jedis.get(TEST_KEY));
 
         
-        jedis.getClient().quit();
+        jedis.disconnect();
         final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(FORKED_POM_FILE, "shutdown");
         shutdownRedisMojo.execute();
 
@@ -65,7 +65,7 @@ public class RunRedisMojoTest extends AbstractRedisMojoTest {
         assertEquals("OK", jedis.set(TEST_KEY, TEST_VALUE));
         assertEquals(TEST_VALUE, jedis.get(TEST_KEY));
 
-        jedis.getClient().quit();
+        jedis.disconnect();
         final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(FORKED_POM_FILE, "shutdown");
         shutdownRedisMojo.execute();
 
