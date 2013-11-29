@@ -25,7 +25,7 @@ Integration tests example
 -----------------
 
 (This example also available here: https://github.com/bsideup/redis-maven-plugin/tree/master/example )
-configure plugin as follow and:
+Configure plugin as follow:
 ```xml
 <plugin>
     <groupId>ru.trylogic.maven.plugins</groupId>
@@ -53,7 +53,7 @@ configure plugin as follow and:
 </plugin>
 ```
 
-After this you will be able to run your integration Redis-backed tests with ```mvn clean verify```
+Now you will be able to run your integration Redis-backed tests with ```mvn clean verify```
 
 License
 -----------------
