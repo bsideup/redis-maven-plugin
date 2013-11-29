@@ -21,9 +21,10 @@ run ```mvn redis:run```
 Is you see this message you are ready to go: ```[INFO] Starting Redis(forked=false) server...```
 
 
-Integration tests example ( https://github.com/bsideup/redis-maven-plugin/tree/master/example )
+Integration tests example
 -----------------
 
+(This example also available here: https://github.com/bsideup/redis-maven-plugin/tree/master/example )
 configure plugin as follow and:
 ```xml
 <plugin>
