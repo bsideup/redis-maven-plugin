@@ -21,16 +21,23 @@ import redis.server.netty.SimpleRedisServer;
 
 @Mojo(name = "run", defaultPhase = LifecyclePhase.NONE)
 public class RunRedisMojo extends AbstractMojo {
+    
+    public static final String REDIS_GROUP_CONTEXT_PROPERTY_NAME = RunRedisMojo.class.getName() + ":redisGroup";
+    
     @Parameter(property = "redis.server.port", defaultValue = "6379")
     public Integer port;
 
     @Parameter(property = "redis.server.forked", defaultValue = "false")
     public boolean forked;
 
+    @SuppressWarnings("unchecked")
     public void execute() throws MojoExecutionException {
         final RedisCommandHandler commandHandler = new RedisCommandHandler(new SimpleRedisServer());
 
-        RedisServerRegistry.redisGroup = new DefaultEventExecutorGroup(1);
+        final DefaultEventExecutorGroup redisGroup = new DefaultEventExecutorGroup(1);
+        
+        getPluginContext().put(REDIS_GROUP_CONTEXT_PROPERTY_NAME, redisGroup);
+        
         ServerBootstrap redisServerBootstrap = new ServerBootstrap();
 
         try {
@@ -45,11 +52,11 @@ public class RunRedisMojo extends AbstractMojo {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new RedisCommandDecoder());
                             p.addLast(new RedisReplyEncoder());
-                            p.addLast(RedisServerRegistry.redisGroup, commandHandler);
+                            p.addLast(redisGroup, commandHandler);
                         }
                     });
 
-            getLog().info("Starting Redis(forked=" + forked + ") server...");
+            getLog().info("Starting Redis(forked=" + forked + ", port=" + port + ") server...");
             ChannelFuture future = redisServerBootstrap.bind();
 
             try {
@@ -59,11 +66,11 @@ public class RunRedisMojo extends AbstractMojo {
                 }
             } catch (InterruptedException e) {
                 getLog().info(e);
-                RedisServerRegistry.redisGroup.shutdownGracefully();
+                redisGroup.shutdownGracefully();
             }
         } finally {
             if (!forked) {
-                RedisServerRegistry.redisGroup.shutdownGracefully();
+                redisGroup.shutdownGracefully();
             }
         }
     }

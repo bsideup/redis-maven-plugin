@@ -16,9 +16,7 @@ import java.net.ConnectException;
 
 public class RunRedisMojoTest extends AbstractRedisMojoTest {
 
-    public static final String SIMPLE_POM_FILE = "src/test/resources/unit/pom-simple.xml";
-
-    public static final String FORKED_POM_FILE = "src/test/resources/unit/pom-forked.xml";
+    public static final String SIMPLE_POM_FILE = "src/test/resources/unit/pom.xml";
 
     public void testRun() throws Exception {
         final RunRedisMojo runRedisMojo = lookupRedisMojo(SIMPLE_POM_FILE, "run");
@@ -37,36 +35,19 @@ public class RunRedisMojoTest extends AbstractRedisMojoTest {
 
         redisThread.start();
 
-        Jedis jedis = new Jedis("localhost", runRedisMojo.port);
+        final Jedis jedis = new Jedis("localhost", runRedisMojo.port);
         waitUntilConnect(jedis);
 
         assertEquals("OK", jedis.set(TEST_KEY, TEST_VALUE));
         assertEquals(TEST_VALUE, jedis.get(TEST_KEY));
 
+        try {
+            jedis.quit();
+        } catch(Exception ignored) {
+
+        }
         
-        jedis.disconnect();
-        final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(FORKED_POM_FILE, "shutdown");
-        shutdownRedisMojo.execute();
-
-        testConnectionDown(jedis);
-    }
-
-    public void testRunForked() throws Exception {
-        final RunRedisMojo runRedisMojo = lookupRedisMojo(FORKED_POM_FILE, "run");
-        assertNotNull(runRedisMojo);
-
-        runRedisMojo.forked = true;
-        
-        runRedisMojo.execute();
-
-        Jedis jedis = new Jedis("localhost", runRedisMojo.port);
-        waitUntilConnect(jedis);
-
-        assertEquals("OK", jedis.set(TEST_KEY, TEST_VALUE));
-        assertEquals(TEST_VALUE, jedis.get(TEST_KEY));
-
-        jedis.disconnect();
-        final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(FORKED_POM_FILE, "shutdown");
+        final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(SIMPLE_POM_FILE, "shutdown");
         shutdownRedisMojo.execute();
 
         testConnectionDown(jedis);
