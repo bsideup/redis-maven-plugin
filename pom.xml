@@ -174,8 +174,9 @@
 
     <distributionManagement>
         <repository>
-            <id>trylogic-releases</id>
-            <url>http://nexus.trylogic.ru/content/repositories/releases/</url>
+            <id>bintray-bsideup-repo-maven-redis-plugin</id>
+            <name>bsideup-repo-maven-redis-plugin</name>
+            <url>https://api.bintray.com/maven/bsideup/repo/maven-redis-plugin</url>
         </repository>
         <snapshotRepository>
             <id>trylogic-snapshots</id>
