@@ -43,7 +43,7 @@ abstract public class AbstractRedisMojoTest extends AbstractMojoTestCase {
     }
     
     protected void waitUntilConnect(Jedis jedis) throws InterruptedException {
-        int attempts = 20;
+        int attempts = 200;
         while(true) {
             if(--attempts <= 0) {
                 fail();
