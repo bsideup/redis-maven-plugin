@@ -218,9 +218,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-bsideup-repo-maven-redis-plugin</id>
-            <name>bsideup-repo-maven-redis-plugin</name>
-            <url>https://api.bintray.com/maven/bsideup/repo/maven-redis-plugin</url>
+            <id>bintray-bsideup-repo-redis-maven-plugin</id>
+            <name>bsideup-repo-redis-maven-plugin</name>
+            <url>https://api.bintray.com/maven/bsideup/repo/redis-maven-plugin</url>
         </repository>
         <snapshotRepository>
             <id>trylogic-snapshots</id>
