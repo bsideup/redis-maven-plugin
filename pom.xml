@@ -3,14 +3,14 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <!--parent>
+    <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
-    </parent-->
+    </parent>
 
     <name>Redis Maven Plugin in pure Java</name>
 
@@ -22,7 +22,6 @@
         <url>https://github.com/bsideup/redis-maven-plugin</url>
         <connection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</developerConnection>
-        <tag>redis-maven-plugin-1.2.2</tag>
     </scm>
     
     <developers>
@@ -42,36 +41,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
@@ -217,17 +186,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-bsideup-repo-redis-maven-plugin</id>
-            <name>bsideup-repo-redis-maven-plugin</name>
-            <url>https://api.bintray.com/maven/bsideup/repo/redis-maven-plugin</url>
-        </repository>
-        <snapshotRepository>
-            <id>trylogic-snapshots</id>
-            <url>http://nexus.trylogic.ru/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>
