@@ -6,7 +6,6 @@ Embedded pure Java redis server for Maven 3. Based on great https://github.com/s
 
 Basic example
 -----------------
-```
 
 add plugin to your pom:
 ```xml
