@@ -6,29 +6,6 @@ Embedded pure Java redis server for Maven 3. Based on great https://github.com/s
 
 Basic example
 -----------------
-
-This plugin is hosted @ JCenter (brand new Maven Central replacement), so add this lines to your pom if they are not already there:
-```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-<pluginRepositories>
-    <pluginRepository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray-plugins</name>
-        <url>http://jcenter.bintray.com</url>
-    </pluginRepository>
-</pluginRepositories>
 ```
 
 add plugin to your pom:
@@ -36,7 +13,7 @@ add plugin to your pom:
 <plugin>
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.2.3</version>
 </plugin>
 ```
 
@@ -55,7 +32,7 @@ Configure plugin as follow:
 <plugin>
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.2.3</version>
     <configuration>
         <forked>true</forked>
     </configuration>
