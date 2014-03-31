@@ -13,11 +13,6 @@
     <description>Embedded pure Java redis server for Maven 3. Based on great https://github.com/spullara/redis-protocol</description>
 
     
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
     <scm>
         <url>https://github.com/bsideup/redis-maven-plugin</url>
         <connection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</connection>
