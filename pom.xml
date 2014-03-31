@@ -3,14 +3,8 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.3.3-SNAPSHOT</version>
+    <version>1.3.4-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
-
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
 
     <name>Redis Maven Plugin in pure Java</name>
 
