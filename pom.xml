@@ -3,7 +3,7 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.4.3-SNAPSHOT</version>
+    <version>1.4.4-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Redis Maven Plugin in pure Java</name>
@@ -12,6 +12,12 @@
     
     <description>Embedded pure Java redis server for Maven 3. Based on great https://github.com/spullara/redis-protocol</description>
 
+    
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
     <scm>
         <url>https://github.com/bsideup/redis-maven-plugin</url>
         <connection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</connection>
@@ -248,6 +254,11 @@
             <id>bintray-bsideup-repo-redis-maven-plugin</id>
             <url>https://api.bintray.com/maven/bsideup/repo/${project.artifactId}</url>
         </repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
