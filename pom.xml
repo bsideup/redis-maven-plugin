@@ -3,7 +3,7 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.4.4-SNAPSHOT</version>
+    <version>1.4.5-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Redis Maven Plugin in pure Java</name>
@@ -11,7 +11,6 @@
     <url>https://github.com/bsideup/redis-maven-plugin</url>
     
     <description>Embedded pure Java redis server for Maven 3. Based on great https://github.com/spullara/redis-protocol</description>
-
     
     <scm>
         <url>https://github.com/bsideup/redis-maven-plugin</url>
@@ -141,18 +140,6 @@
                     <forkMode>always</forkMode>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                    <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -249,11 +236,6 @@
             <id>bintray-bsideup-repo-redis-maven-plugin</id>
             <url>https://api.bintray.com/maven/bsideup/repo/${project.artifactId}</url>
         </repository>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
 
 </project>
