@@ -59,6 +59,46 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
@@ -116,12 +156,6 @@
                 <version>2.1.2</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.maven.plugin-testing</groupId>
-                <artifactId>maven-plugin-testing-harness</artifactId>
-                <version>2.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
                 <version>3.2</version>
@@ -132,6 +166,13 @@
                 <groupId>com.github.spullara.redis</groupId>
                 <artifactId>netty4-server</artifactId>
                 <version>0.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugin-testing</groupId>
+                <artifactId>maven-plugin-testing-harness</artifactId>
+                <version>2.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>redis.clients</groupId>
@@ -187,5 +228,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-bsideup-repo-redis-maven-plugin</id>
+            <url>https://api.bintray.com/maven/bsideup/repo/${project.artifactId}</url>
+        </repository>
+    </distributionManagement>
 
 </project>
