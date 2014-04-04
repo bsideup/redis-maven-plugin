@@ -3,26 +3,20 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.4.6-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
-
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
 
     <name>Redis Maven Plugin in pure Java</name>
 
     <url>https://github.com/bsideup/redis-maven-plugin</url>
     
     <description>Embedded pure Java redis server for Maven 3. Based on great https://github.com/spullara/redis-protocol</description>
-
+    
     <scm>
         <url>https://github.com/bsideup/redis-maven-plugin</url>
         <connection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/bsideup/redis-maven-plugin.git</developerConnection>
-      <tag>HEAD</tag>
+    <tag>HEAD</tag>
   </scm>
     
     <developers>
@@ -43,6 +37,36 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -54,6 +78,32 @@
                         <goals>
                             <goal>generate-metadata</goal>
                             <goal>generate-test-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -90,14 +140,6 @@
                     <forkMode>always</forkMode>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -116,12 +158,6 @@
                 <version>2.1.2</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.maven.plugin-testing</groupId>
-                <artifactId>maven-plugin-testing-harness</artifactId>
-                <version>2.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
                 <version>3.2</version>
@@ -132,6 +168,13 @@
                 <groupId>com.github.spullara.redis</groupId>
                 <artifactId>netty4-server</artifactId>
                 <version>0.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugin-testing</groupId>
+                <artifactId>maven-plugin-testing-harness</artifactId>
+                <version>2.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>redis.clients</groupId>
@@ -187,5 +230,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-bsideup-repo-redis-maven-plugin</id>
+            <url>https://api.bintray.com/maven/bsideup/repo/${project.artifactId}</url>
+        </repository>
+    </distributionManagement>
 
 </project>
