@@ -33,13 +33,16 @@ public class RunRedisMojo extends AbstractMojo {
     @Parameter(property = "redis.server.skip", defaultValue = "false")
     public boolean skip;
 
-    @SuppressWarnings("unchecked")
+    @Override
     public void execute() throws MojoExecutionException {
         if (skip) {
             getLog().info("Skipping Redis server...");
             return;
         }
+        doExecute(forked);
+    }
 
+    public void doExecute(boolean forked) {
         final RedisCommandHandler commandHandler = new RedisCommandHandler(new SimpleRedisServer());
 
         final DefaultEventExecutorGroup redisGroup = new DefaultEventExecutorGroup(1);
@@ -67,14 +70,15 @@ public class RunRedisMojo extends AbstractMojo {
             getLog().info("Starting Redis(forked=" + forked + ", port=" + port + ") server...");
             ChannelFuture future = redisServerBootstrap.bind();
 
-            try {
-                if (!forked) {
+            if (!forked) {
+                getLog().info("Press Ctrl-C to stop Redis...");
+                try {
                     ChannelFuture syncFuture = future.sync();
                     syncFuture.channel().closeFuture().sync();
+                } catch (InterruptedException e) {
+                    getLog().info(e);
+                    redisGroup.shutdownGracefully();
                 }
-            } catch (InterruptedException e) {
-                getLog().info(e);
-                redisGroup.shutdownGracefully();
             }
         } finally {
             if (!forked) {

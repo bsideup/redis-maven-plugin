@@ -1,18 +1,9 @@
 package ru.trylogic.maven.plugins.redis.tests;
 
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.project.ProjectBuildingRequest;
 import redis.clients.jedis.Jedis;
 import ru.trylogic.maven.plugins.redis.RunRedisMojo;
 import ru.trylogic.maven.plugins.redis.ShutdownRedisMojo;
-
-import java.io.File;
-import java.net.ConnectException;
 
 public class RunRedisMojoTest extends AbstractRedisMojoTest {
 
@@ -46,7 +37,7 @@ public class RunRedisMojoTest extends AbstractRedisMojoTest {
         } catch(Exception ignored) {
 
         }
-        
+
         final ShutdownRedisMojo shutdownRedisMojo = lookupRedisMojo(SIMPLE_POM_FILE, "shutdown");
         shutdownRedisMojo.execute();
 
