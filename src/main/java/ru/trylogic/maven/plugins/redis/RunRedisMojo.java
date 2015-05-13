@@ -23,6 +23,7 @@ import redis.server.netty.SimpleRedisServer;
 public class RunRedisMojo extends AbstractMojo {
 
     public static final String REDIS_GROUP_CONTEXT_PROPERTY_NAME = RunRedisMojo.class.getName() + ":redisGroup";
+    public static final String REDIS_CHANNEL_CONTEXT_PROPERTY_NAME = RunRedisMojo.class.getName() +  ":redisChannel";
 
     @Parameter(property = "redis.server.port", defaultValue = "6379")
     public Integer port;
@@ -69,19 +70,18 @@ public class RunRedisMojo extends AbstractMojo {
 
             getLog().info("Starting Redis(forked=" + forked + ", port=" + port + ") server...");
             ChannelFuture future = redisServerBootstrap.bind();
+            ChannelFuture syncFuture = future.sync();
+            getPluginContext().put(REDIS_CHANNEL_CONTEXT_PROPERTY_NAME, syncFuture.channel());
 
             if (!forked) {
                 getLog().info("Press Ctrl-C to stop Redis...");
-                try {
-                    ChannelFuture syncFuture = future.sync();
-                    syncFuture.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    getLog().info(e);
-                    redisGroup.shutdownGracefully();
-                }
+                syncFuture.channel().closeFuture().sync();
             }
+        } catch (InterruptedException e) {
+            getLog().info(e);
+            redisGroup.shutdownGracefully();
         } finally {
-            if (!forked) {
+            if (!forked && !redisGroup.isShutdown()) {
                 redisGroup.shutdownGracefully();
             }
         }

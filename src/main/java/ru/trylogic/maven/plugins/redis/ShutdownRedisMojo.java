@@ -1,6 +1,8 @@
 package ru.trylogic.maven.plugins.redis;
 
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,12 +26,26 @@ public class ShutdownRedisMojo  extends AbstractMojo {
         }
 
         DefaultEventExecutorGroup redisGroup = (DefaultEventExecutorGroup) getPluginContext().get(RunRedisMojo.REDIS_GROUP_CONTEXT_PROPERTY_NAME);
+        Channel redisChannel = (Channel) getPluginContext().get(RunRedisMojo.REDIS_CHANNEL_CONTEXT_PROPERTY_NAME);
 
-        if(redisGroup == null) {
+        if(redisGroup == null || redisChannel == null) {
             throw new MojoExecutionException("Redis server is not running");
         }
 
         getLog().info("Shutting down Redis server...");
-        redisGroup.shutdownGracefully();
+        ChannelFuture closeFuture = redisChannel.close();
+        try {
+            closeFuture.sync();
+
+            // The Netty version required by the embedded Redis implementation does not
+            // return a Future, so wait until terminated in a loop
+            redisGroup.shutdownGracefully();
+            while (!redisGroup.isTerminated()) {
+                Thread.sleep(50);
+            }
+            getLog().info("Redis server shutdown completed");
+        } catch (InterruptedException e) {
+            getLog().info(e);
+        }
     }
 }
