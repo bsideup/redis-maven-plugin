@@ -3,7 +3,7 @@
 
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.4.6-SNAPSHOT</version>
+    <version>1.4.7-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Redis Maven Plugin in pure Java</name>
