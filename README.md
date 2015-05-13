@@ -12,7 +12,7 @@ add plugin to your pom:
 <plugin>
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.2.3</version>
+    <version>1.4.6</version>
 </plugin>
 ```
 
@@ -31,7 +31,7 @@ Configure plugin as follow:
 <plugin>
     <groupId>ru.trylogic.maven.plugins</groupId>
     <artifactId>redis-maven-plugin</artifactId>
-    <version>1.2.3</version>
+    <version>1.4.6</version>
     <configuration>
         <forked>true</forked>
     </configuration>
